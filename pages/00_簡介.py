@@ -1,59 +1,43 @@
 import solara
 
-# 1. 建立一個「響應式」變數，作為元件的「記憶」
-#    注意：我們使用 .value 來存取它的值
+# 1. 建立一個「響應式」變數
 name = solara.reactive("Guest")
 
 @solara.component
 def Page():
-   
+    
+    # 標題區塊
     with solara.Column(align="center"):
-        markdown = """
+        solara.Markdown("""
         ## 澎湖珊瑚礁與相關生態網站
-        """
+        """)
 
-        solara.Markdown(markdown)
+    # 簡介區塊
     solara.Markdown("## 簡介")
-    solara.Markdown("澎湖島在台灣本專案運用 Google Earth Engine 的開放資料，分類與分析 2015 年至 2025 年間的衛星影像，試圖從數據中拼湊出珊瑚礁棲地的消長。是一份段關於時間、海洋與變化的故事，希望能透過視覺化的數據，讓我們看見海洋的呼吸，並共同思考永續共存的未來。")
+    solara.Markdown("澎湖島在台灣本專案運用 Google Earth Engine 的開放資料，分類與分析 2015 年至 2025 年間的衛星影像，試圖從數據中拼湊出珊瑚礁棲地的消長。是一份關於時間、海洋與變化的故事，希望能透過視覺化的數據，讓我們看見海洋的呼吸，並共同思考永續共存的未來。")
+
+    # 圖片區塊標題
+    solara.Markdown("## 好餓海星")
     
-    # GitHub 圖片庫的基礎 URL
-    repo_url = "https://raw.githubusercontent.com/s1243001/solara1119/main/"
-    
-    # 新增圖片並排顯示 (使用 solara.Row 實現並排)
-    solara.Markdown("## 現場照片")
-    
-    # 使用 solara.Row 建立並排佈局，並設定間距和響應式換行
-    # 這裡的樣式用於控制圖片的並排和響應式行為
-    with solara.Row(gap="16px", style={"flex-wrap": "wrap", "justify-content": "center"}):
+    # 使用 solara.Row 建立並排佈局
+    # gap="16px": 圖片之間的間距
+    # wrap=True: 螢幕變窄時自動換行 (這比寫 style={"flex-wrap": "wrap"} 更簡潔)
+    with solara.Row(gap="16px", justify="center", style={"flex-wrap": "wrap"}):
         
-        # 圖片 1: 馬太鞍溪堰塞湖災害圖 1
-        # 使用 solara.Div 作為容器，並應用視覺樣式和最大高度限制
+        # --- 圖片容器開始 ---
         with solara.Div(style={
-            "flex": "1 1 48%",                      # 佈局：平均佔據 48% 寬度
-            "min-width": "300px",                   # 佈局：最小寬度
-            "max-height": "400px",                  # 容器最大高度
-            "overflow": "hidden",                   # 確保圖片不超出容器
-            "border-radius": "8px",                 # 視覺：圓角
-            "box-shadow": "0 4px 12px rgba(0, 0, 0, 0.1)", # 視覺：陰影
+            "flex": "1 1 400px",                # 響應式關鍵：基本寬度 400px，可縮放
+            "max-width": "600px",               # 限制最大寬度，避免在大螢幕太巨大
+            "border-radius": "12px",            # 圓角
+            "box-shadow": "0 4px 12px rgba(0,0,0,0.15)", # 陰影讓圖片浮起來
+            "overflow": "hidden",               # 確保圖片圓角不被切掉
+            "margin-bottom": "20px"             # 下方留白
         }):
-            # solara.Image 負責載入圖片，只設定寬度為 100%，高度自動按比例縮放
+            # ✅ 關鍵修改：
+            # 1. 路徑直接寫 "/您的檔名.jpg" (對應 public 資料夾內的檔案)
+            # 2. 這裡假設您的檔名是 pic_01.jpg，如果是 cots.jpg 請修改這裡
             solara.Image(
-                image=f"{repo_url}pic_01.jpg",
-                width="100%",
-                # 移除 height 和 alt 參數以提高相容性
+                "/pic_01.jpg", 
+                width="100%"
             )
-        
-        # 圖片 2: 馬太鞍溪堰塞湖災害圖 2
-        with solara.Div(style={
-            "flex": "1 1 48%",
-            "min-width": "300px",
-            "max-height": "400px",
-            "overflow": "hidden",
-            "border-radius": "8px",
-            "box-shadow": "0 4px 12px rgba(0, 0, 0, 0.1)",
-        }):
-            solara.Image(
-                image=f"{repo_url}pic_02.jpg",
-                width="100%",
-                # 移除 height 和 alt 參數以提高相容性
-            )
+        # --- 圖片容器結束 ---
