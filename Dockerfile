@@ -28,4 +28,4 @@ COPY --chown=user . /code
 
 # 8. 啟動指令
 # 注意：一定要指定 host 為 0.0.0.0 和 port 為 7860
-CMD ["solara", "run", "./pages", "--host=0.0.0.0", "--port=7860"]
+CMD ["solara", "run", "./pages", "--host=0.0.0.0", "--port=8765"]
